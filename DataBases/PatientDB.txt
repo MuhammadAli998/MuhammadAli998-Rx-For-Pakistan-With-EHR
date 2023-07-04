@@ -1,0 +1,43 @@
+CREATE DATABASE PatientDB1;
+GO
+
+USE PatientDB1;
+GO
+
+CREATE TABLE Appointment (
+    D_id INT PRIMARY KEY IDENTITY(1, 1),
+    DoctorName NVARCHAR(50),
+    PhoneNumber NVARCHAR(50),
+    Date DATETIME,
+    Time TIME(7)
+);
+GO
+
+CREATE TABLE Appusers (
+    Id INT PRIMARY KEY IDENTITY(1, 1),
+    Name NVARCHAR(50) NOT NULL,
+    PhoneNumber NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(50) NOT NULL,
+    Cnic BIGINT NOT NULL,
+    Address NVARCHAR(MAX) NOT NULL,
+    Password NVARCHAR(50) NOT NULL,
+    Gender NVARCHAR(50) NOT NULL
+);
+GO
+
+CREATE TABLE MedicineName (
+    M_id INT PRIMARY KEY IDENTITY(1, 1),
+    MedicineName NVARCHAR(50)
+);
+GO
+
+CREATE TABLE Prescription (
+    id INT PRIMARY KEY IDENTITY(1, 1),
+    M_id INT NOT NULL,
+    D_id INT NOT NULL,
+    Routine NVARCHAR(50),
+    Days NVARCHAR(50),
+    CONSTRAINT FK_Prescription_Appointment FOREIGN KEY (D_id) REFERENCES Appointment (D_id),
+    CONSTRAINT FK_Prescription_MedicineName FOREIGN KEY (M_id) REFERENCES MedicineName (M_id)
+);
+GO

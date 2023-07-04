@@ -1,0 +1,56 @@
+CREATE DATABASE [MedicineDB];
+GO
+USE [MedicineDB];
+GO
+
+-- Create table Appuserss
+CREATE TABLE [dbo].[Appuserss](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [nvarchar](50) NULL,
+    [Email] [nvarchar](50) NULL,
+    [Password] [nvarchar](50) NULL,
+    CONSTRAINT [PK_Appuser] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- Create table Disease
+CREATE TABLE [dbo].[Disease](
+    [Did] [int] IDENTITY(1,1) NOT NULL,
+    [DiseaseName] [nvarchar](50) NULL,
+    CONSTRAINT [PK_Disease] PRIMARY KEY CLUSTERED ([Did] ASC)
+);
+GO
+
+-- Create table DiseaseContraindication
+CREATE TABLE [dbo].[DiseaseContraindication](
+    [DC_id] [int] IDENTITY(1,1) NOT NULL,
+    [id] [int] NOT NULL,
+    [Did] [int] NOT NULL,
+    [Comment] [nvarchar](200) NULL,
+    CONSTRAINT [PK_DiseaseContraindication] PRIMARY KEY CLUSTERED ([DC_id] ASC),
+    CONSTRAINT [FK_DiseaseContraindication_Disease] FOREIGN KEY([Did]) REFERENCES [dbo].[Disease]([Did]),
+    CONSTRAINT [FK_DiseaseContraindication_Medicine] FOREIGN KEY([id]) REFERENCES [dbo].[Medicine]([id])
+);
+GO
+
+-- Create table Medicine
+CREATE TABLE [dbo].[Medicine](
+    [id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [nvarchar](50) NULL,
+    [Type] [nvarchar](50) NULL,
+    [Status] [nvarchar](50) NULL,
+    CONSTRAINT [PK_Medicine] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+GO
+
+-- Create table MedicineContraindication
+CREATE TABLE [dbo].[MedicineContraindication](
+    [MC_id] [int] IDENTITY(1,1) NOT NULL,
+    [id] [int] NOT NULL,
+    [C_id] [int] NULL,
+    [Comment] [nvarchar](200) NULL,
+    CONSTRAINT [PK_MedicineContraindication] PRIMARY KEY CLUSTERED ([MC_id] ASC),
+    CONSTRAINT [FK_MedicineContraindication_Medicine] FOREIGN KEY([id]) REFERENCES [dbo].[Medicine]([id]),
+    CONSTRAINT [FK_MedicineContraindication_Medicine1] FOREIGN KEY([C_id]) REFERENCES [dbo].[Medicine]([id])
+);
+GO

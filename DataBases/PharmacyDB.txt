@@ -1,0 +1,44 @@
+CREATE DATABASE PharmacyDB1;
+GO
+
+USE PharmacyDB1;
+GO
+
+CREATE TABLE Appusersss (
+    id INT PRIMARY KEY IDENTITY(1, 1),
+    PharamacyName NVARCHAR(MAX),
+    PharamacyNumber NVARCHAR(MAX),
+    Email NVARCHAR(MAX),
+    Licence NVARCHAR(MAX),
+    Address NVARCHAR(MAX),
+    Password NVARCHAR(MAX),
+    Gender NVARCHAR(MAX)
+);
+GO
+
+CREATE TABLE MedicineName (
+    M_id INT PRIMARY KEY IDENTITY(1, 1),
+    MedicineName NVARCHAR(50)
+);
+GO
+
+CREATE TABLE PatientName (
+    Pid INT PRIMARY KEY IDENTITY(1, 1),
+    Cnic BIGINT,
+    PatientName NVARCHAR(50),
+    PhoneNumber NVARCHAR(50),
+    Date DATETIME,
+    Time TIME(7)
+);
+GO
+
+CREATE TABLE PharamacyPrescription (
+    id INT PRIMARY KEY IDENTITY(1, 1),
+    Pid INT NOT NULL,
+    M_id INT NOT NULL,
+    Routine NVARCHAR(50),
+    Days NVARCHAR(50),
+    CONSTRAINT FK_PharamacyPrescription_PatientName FOREIGN KEY (Pid) REFERENCES PatientName (Pid),
+    CONSTRAINT FK_PharamacyPrescription_MedicineName FOREIGN KEY (M_id) REFERENCES MedicineName (M_id)
+);
+GO

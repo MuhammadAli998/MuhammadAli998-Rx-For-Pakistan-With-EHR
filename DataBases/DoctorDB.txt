@@ -1,0 +1,94 @@
+-- Create the new database
+CREATE DATABASE DoctorDB3;
+
+-- Use the new database
+USE DoctorDB3;
+
+-- Create the appointment table
+CREATE TABLE appointment (
+    Aid INT IDENTITY(1,1) NOT NULL,
+    Cnic BIGINT NULL,
+    [Date] DATETIME NULL,
+    [Time] TIME(7) NULL,
+    CONSTRAINT PK_appointment PRIMARY KEY CLUSTERED (Aid)
+);
+
+-- Create the Appuser table
+CREATE TABLE Appuser (
+    Id INT IDENTITY(1,1) NOT NULL,
+    Name NVARCHAR(50) NULL,
+    PhoneNumber NVARCHAR(50) NULL,
+    Email NVARCHAR(50) NULL,
+    Cnic BIGINT NULL,
+    Address NVARCHAR(200) NULL,
+    Specialization NVARCHAR(50) NULL,
+    [Password] NVARCHAR(50) NULL,
+    Gender NVARCHAR(50) NULL,
+    CONSTRAINT PK_Appuser PRIMARY KEY CLUSTERED (Id)
+);
+
+-- Create the DiseasesH table
+CREATE TABLE DiseasesH (
+    D_id INT IDENTITY(1,1) NOT NULL,
+    Aid INT NOT NULL,
+    Disease VARCHAR(MAX) NULL,
+    CONSTRAINT PK_DiseasesH PRIMARY KEY CLUSTERED (D_id)
+);
+
+-- Create the patient table
+CREATE TABLE patient (
+    Cnic BIGINT NOT NULL,
+    PatientName NVARCHAR(50) NULL,
+    PatientAddress NVARCHAR(MAX) NULL,
+    PhoneNumber BIGINT NULL,
+    CONSTRAINT PK_patient PRIMARY KEY CLUSTERED (Cnic)
+);
+
+-- Create the patientMedicine table
+CREATE TABLE patientMedicine (
+    Mid INT IDENTITY(1,1) NOT NULL,
+    Medicine NVARCHAR(50) NULL,
+    CONSTRAINT PK_patientMedicine PRIMARY KEY CLUSTERED (Mid)
+);
+
+-- Create the Prescription table
+CREATE TABLE Prescription (
+    Id INT IDENTITY(1,1) NOT NULL,
+    Aid INT NOT NULL,
+    Mid INT NOT NULL,
+    Routine VARCHAR(50) NULL,
+    Days VARCHAR(50) NULL,
+    CONSTRAINT PK_Prescription PRIMARY KEY CLUSTERED (Id)
+);
+
+-- Create the Vital table
+CREATE TABLE Vital (
+    V_id INT IDENTITY(1,1) NOT NULL,
+    High_BP INT NULL,
+    Low_BP INT NULL,
+    Temperature INT NULL,
+    SugarLevel INT NULL,
+    Aid INT NULL,
+    CONSTRAINT PK_Vitals PRIMARY KEY CLUSTERED (V_id)
+);
+
+-- Add foreign key constraints
+ALTER TABLE appointment
+ADD CONSTRAINT FK_appointment_patient FOREIGN KEY (Cnic)
+REFERENCES patient (Cnic);
+
+ALTER TABLE DiseasesH
+ADD CONSTRAINT FK_DiseasesH_appointment FOREIGN KEY (Aid)
+REFERENCES appointment (Aid);
+
+ALTER TABLE Prescription
+ADD CONSTRAINT FK_Prescription_appointment FOREIGN KEY (Aid)
+REFERENCES appointment (Aid);
+
+ALTER TABLE Prescription
+ADD CONSTRAINT FK_Prescription_patientMedicine FOREIGN KEY (Mid)
+REFERENCES patientMedicine (Mid);
+
+ALTER TABLE Vital
+ADD CONSTRAINT FK_Vital_appointment FOREIGN KEY (Aid)
+REFERENCES appointment (Aid);
